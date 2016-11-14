@@ -118,7 +118,7 @@
 		<h1>ф.н. 81291 &ndash; група 1 &ndash; Божин Кацарски</h1>
 
 		<script>
-			function createBoxGeometries(kanji) { //done
+			function createBoxGeometries(kanji) {
 				kanji.geometries.boxGeometries = [];
 
 				//initialize dimensions
@@ -134,22 +134,22 @@
 			}
 
 			function positionBoxGeometries(kanji) {
-				//initialize position
-				kanji.geometries.boxGeometries[0].translate( 0, 7, 0);
-				kanji.geometries.boxGeometries[1].translate( 3, 7, 0);
-				kanji.geometries.boxGeometries[2].translate(-3, 7, 0);
+				//initialize positions
+				kanji.geometries.boxGeometries[0].translate( 0, 7,  0);
+				kanji.geometries.boxGeometries[1].translate( 3, 7,  0);
+				kanji.geometries.boxGeometries[2].translate(-3, 7,  0);
 
 				kanji.geometries.boxGeometries[3].translate( 0, -2, 0);
 				kanji.geometries.boxGeometries[4].translate( 0,  0, 0);
 				kanji.geometries.boxGeometries[5].translate( 0, -1, 0);
 
-				kanji.geometries.boxGeometries[6].translate( -3, 4, 0);
+				kanji.geometries.boxGeometries[6].translate(-3,  4, 0);
 			}
 			
 			function createShapes(kanji) {
 				kanji.shapes = [];
-				var shapesCount = 7;
 
+				var shapesCount = 7;
 				for(var i = 0; i < shapesCount; i++)
 					kanji.shapes[i] = new THREE.Shape();
 
@@ -188,14 +188,14 @@
 				kanji.shapes[4].quadraticCurveTo(1, -4, 1, 0.5);
 				kanji.shapes[4].moveTo(0,0);
 				
-				//small curve on the right #1
+				//small curve on the right #1 (top)
 				kanji.shapes[5].moveTo(0,0);
 				kanji.shapes[5].quadraticCurveTo(3, 2, 3, 3.5);
 				kanji.shapes[5].moveTo(2, 4);
 				kanji.shapes[5].quadraticCurveTo(2, 2.5, -1, 1);
 				kanji.shapes[5].moveTo(0,0);
 				
-				//small curve on the right #2
+				//small curve on the right #2 (bottom)
 				kanji.shapes[6].moveTo(0,0);
 				kanji.shapes[6].quadraticCurveTo(3, 2, 3, 3.5);
 				kanji.shapes[6].moveTo(2, 4);
@@ -203,7 +203,7 @@
 				kanji.shapes[6].moveTo(0,0);
 			}
 
-			function createExtrudeGeometries(kanji) { //done
+			function createExtrudeGeometries(kanji) {
 				kanji.geometries.extrudeGeometries = [];
 
 				var putIndex = 0;
@@ -229,12 +229,11 @@
 				kanji.geometries.extrudeGeometries[5].translate(2, 2, 0);
 				kanji.geometries.extrudeGeometries[6].translate(3.5, 0.5, 0);
 			}
-
 			
-			function createMeshes(kanji) { //done
-				var putIndex = 0;
-
+			function createMeshes(kanji) {
 				kanji.meshes = [];
+
+				var putIndex = 0;
 
 				for(var i in kanji.geometries.boxGeometries)
 					kanji.meshes[putIndex++] = new THREE.Mesh(kanji.geometries.boxGeometries[i], kanji.material);
@@ -243,13 +242,22 @@
 					kanji.meshes[putIndex++] = new THREE.Mesh(kanji.geometries.extrudeGeometries[i], kanji.material);
 			}
 
-			function addMeshesToScene(kanji) { //done
+			function createObject3D(kanji) {
+				kanji.object3D = new THREE.Object3D();
+
 				for(var i in kanji.meshes)
-					kanji.scene.add(kanji.meshes[i]);
+					kanji.object3D.add(kanji.meshes[i]);
+				
+				//optional corrections of the kanji inside the box
+				kanji.object3D.position.set(0, -1, 0);
+				kanji.object3D.scale.set(1.2, 1.2, 1);
+			}
+
+			function addKanjiToScene(kanji) {
+				kanji.scene.add(kanji.object3D);
 			}
 
 			createScene(true); // true=има рамка; false=няма рамка
-			//createScene(false); // true=има рамка; false=няма рамка
 
 			var kanji = {
 				shapes: [], //2D THREE.Shape-s for curved parts of the kanji
@@ -258,6 +266,7 @@
 					boxGeometries: [] //boxGeometries for horizontal/vertical parts of the kanji
 				},
 				meshes: [], //meshes from all the geometries
+				object3D: undefined,
 				
 				extrudeSettings: { //TODO check settings
 					amount: 10,
@@ -278,10 +287,9 @@
 			positionExtrudeGeometries(kanji);
 
 			createMeshes(kanji);
-			console.log("kanji.meshes created");
+			createObject3D(kanji);
 
-			addMeshesToScene(kanji);
-			console.log("kanji.meshes added to scene");
+			addKanjiToScene(kanji);
 		</script>
 	</body>
 </html>
