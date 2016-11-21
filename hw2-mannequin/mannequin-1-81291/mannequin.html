@@ -7,7 +7,7 @@
 	</head>
 	
 	<body>
-		<h1>"Описание на действието"<br><small>ф.н. 81291 &ndash; група 1 &ndash; Божин Кацарски</small></h1>
+		<h1>"Физзарядка"<br><small>ф.н. 81291 &ndash; група 1 &ndash; Божин Кацарски</small></h1>
 
 		<script>
 			// нагласяване на цвета и центрирането на текста с имената ви
@@ -38,19 +38,87 @@
 				if (animate) animate(t++);
 				renderer.render( scene, camera );
 			}			
-			
-			// човече
-			манекен = мъжествен();
+		
 			// тук се описват статичните елементи на позата
+
+			{	var jack = мъжествен();
+				jack.врът(0,-70,0);
+				jack.position.x = -30;
+				jack.position.z = -50;
 			
+				jack.speed = 5;
+				jack.elbowAngle = 40;
+				jack.jumpHeight = function (t) { return (sin(t) > 0.6) ? 1.2 - sin(t) : sin(t); }
+			}
+
+			{	var jane = женствен();
+				jane.врът(0,-130,0);
+				jane.position.x = 30;
+				jane.position.y = -25;
+				jane.position.z = -50;
+			
+				jane.л_крак.врът( 0, -30, -90); 
+				jane.д_крак.врът( 0,  30, -90);
+				jane.д_глезен.врът(0,0,60);
+				jane.л_глезен.врът(0,0,60);
+
+				jane.speed = 3;
+
+				jane.body = { from: {x:  0, y:   0, z:   0},
+							  to:   {x: 40, y: -20, z: -30} };
+
+				jane.lArm =  { from: {x:  0, y:  0, z:    0},
+							   to:   {x:  0, y: 25, z: -110} };
+
+				jane.rArm =  { from: {x:  0, y:  0, z:    0},
+					     	   to:   {x:  0, y: 10, z: -110} };
+				
+				jane.head =  { from: {x:  0, y:  0, z:  10},
+					     	   to:   {x:  0, y:  0, z: -20} };
+			}
+
 			// анимация на човечето
-			animate = function (t)
-			{
+			animate = function (t) {
 				// тук се описват динамичните елементи на позата
 				// като променливата t е номер на кадър, като се
 				// очаква 1 секунда да е приблизително 60 кадъра
-				манекен.врат.врът(0,0,10*sin(5*t)-5);
-				манекен.глава.врът(0,0,10*sin(5*t)-5);
+				
+				{ // jumping Jack
+					
+					jack.д_ръка.врът (              60*sin(t*jack.speed)-60             , 0, 0);
+					jack.д_лакът.врът( jack.elbowAngle*sin(t*jack.speed)-jack.elbowAngle, 0, 0);
+
+					jack.л_ръка.врът (             -60*sin(t*jack.speed)+60             , 0, 0);
+					jack.л_лакът.врът(-jack.elbowAngle*sin(t*jack.speed)+jack.elbowAngle, 0, 0);
+
+					jack.л_крак.врът( -15*sin(t*jack.speed)+15, 0, 0);
+					jack.д_крак.врът(  15*sin(t*jack.speed)-15, 0, 0);
+
+					jack.position.y = 6*jack.jumpHeight(t*jack.speed); 
+				}
+
+				{ // stretching Jane
+
+					jane.тяло.врът(
+						jane.body.from.x + (jane.body.to.x-jane.body.from.x)*(sin(t*jane.speed)+1)/2, 
+						jane.body.from.y + (jane.body.to.y-jane.body.from.y)*(sin(t*jane.speed)+1)/2, 
+						jane.body.from.z + (jane.body.to.z-jane.body.from.z)*(sin(t*jane.speed)+1)/2 );
+				
+					jane.л_ръка.врът(
+							jane.lArm.from.x + (jane.lArm.to.x-jane.lArm.from.x)*(sin(t*jane.speed)+1)/2, 
+							jane.lArm.from.y + (jane.lArm.to.y-jane.lArm.from.y)*(sin(t*jane.speed)+1)/2, 
+							jane.lArm.from.z + (jane.lArm.to.z-jane.lArm.from.z)*(sin(t*jane.speed)+1)/2 );	
+					
+					jane.д_ръка.врът(
+							jane.rArm.from.x + (jane.rArm.to.x-jane.rArm.from.x)*(sin(t*jane.speed)+1)/2, 
+							jane.rArm.from.y + (jane.rArm.to.y-jane.rArm.from.y)*(sin(t*jane.speed)+1)/2, 
+							jane.rArm.from.z + (jane.rArm.to.z-jane.rArm.from.z)*(sin(t*jane.speed)+1)/2 );
+					
+					jane.глава.врът(
+							jane.head.from.x + (jane.head.to.x-jane.head.from.x)*(sin(t*jane.speed)+1)/2, 
+							jane.head.from.y + (jane.head.to.y-jane.head.from.y)*(sin(t*jane.speed)+1)/2, 
+							jane.head.from.z + (jane.head.to.z-jane.head.from.z)*(sin(t*jane.speed)+1)/2 );
+				}
 			}
 
 			drawFrame();
