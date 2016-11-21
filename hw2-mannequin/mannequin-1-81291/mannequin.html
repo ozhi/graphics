@@ -52,7 +52,7 @@
 			}
 
 			{	var jane = женствен();
-				jane.врът(0,-130,0);
+				jane.врът(0,-120,0);
 				jane.position.x = 30;
 				jane.position.y = -25;
 				jane.position.z = -50;
@@ -62,19 +62,23 @@
 				jane.д_глезен.врът(0,0,60);
 				jane.л_глезен.врът(0,0,60);
 
-				jane.speed = 3;
+				jane.speed = 2;
 
-				jane.body = { from: {x:  0, y:   0, z:   0},
-							  to:   {x: 40, y: -20, z: -30} };
+				jane.body = { from: {x:   0, y:   0, z:   0},
+							  to1:  {x:  40, y: -20, z: -30},
+							  to2:  {x: -40, y:  20, z: -30} };
 
 				jane.lArm =  { from: {x:  0, y:  0, z:    0},
-							   to:   {x:  0, y: 25, z: -110} };
+							   to1:  {x:  0, y: 25, z: -110},
+							   to2:  {x:  0, y: -10, z: -110} };
 
 				jane.rArm =  { from: {x:  0, y:  0, z:    0},
-					     	   to:   {x:  0, y: 10, z: -110} };
+					     	   to1:  {x:  0, y: 10, z: -110},
+							   to2:  {x:  0, y: -25, z: -110} };
 				
 				jane.head =  { from: {x:  0, y:  0, z:  10},
-					     	   to:   {x:  0, y:  0, z: -20} };
+					     	   to1:  {x:  0, y:  0, z: -30},
+							   to2:  {x:  0, y:  0, z: -30}};
 			}
 
 			// анимация на човечето
@@ -99,25 +103,41 @@
 
 				{ // stretching Jane
 
-					jane.тяло.врът(
-						jane.body.from.x + (jane.body.to.x-jane.body.from.x)*(sin(t*jane.speed)+1)/2, 
-						jane.body.from.y + (jane.body.to.y-jane.body.from.y)*(sin(t*jane.speed)+1)/2, 
-						jane.body.from.z + (jane.body.to.z-jane.body.from.z)*(sin(t*jane.speed)+1)/2 );
-				
-					jane.л_ръка.врът(
-							jane.lArm.from.x + (jane.lArm.to.x-jane.lArm.from.x)*(sin(t*jane.speed)+1)/2, 
-							jane.lArm.from.y + (jane.lArm.to.y-jane.lArm.from.y)*(sin(t*jane.speed)+1)/2, 
-							jane.lArm.from.z + (jane.lArm.to.z-jane.lArm.from.z)*(sin(t*jane.speed)+1)/2 );	
-					
-					jane.д_ръка.врът(
-							jane.rArm.from.x + (jane.rArm.to.x-jane.rArm.from.x)*(sin(t*jane.speed)+1)/2, 
-							jane.rArm.from.y + (jane.rArm.to.y-jane.rArm.from.y)*(sin(t*jane.speed)+1)/2, 
-							jane.rArm.from.z + (jane.rArm.to.z-jane.rArm.from.z)*(sin(t*jane.speed)+1)/2 );
-					
-					jane.глава.врът(
-							jane.head.from.x + (jane.head.to.x-jane.head.from.x)*(sin(t*jane.speed)+1)/2, 
-							jane.head.from.y + (jane.head.to.y-jane.head.from.y)*(sin(t*jane.speed)+1)/2, 
-							jane.head.from.z + (jane.head.to.z-jane.head.from.z)*(sin(t*jane.speed)+1)/2 );
+					if(sin(t*jane.speed) > 0) {
+						jane.тяло.врът( jane.body.from.x + (jane.body.to1.x-jane.body.from.x) * sin(t*jane.speed), 
+										jane.body.from.y + (jane.body.to1.y-jane.body.from.y) * sin(t*jane.speed), 
+										jane.body.from.z + (jane.body.to1.z-jane.body.from.z) * sin(t*jane.speed) );
+						
+						jane.л_ръка.врът( jane.lArm.from.x + (jane.lArm.to1.x-jane.lArm.from.x) * sin(t*jane.speed), 
+										  jane.lArm.from.y + (jane.lArm.to1.y-jane.lArm.from.y) * sin(t*jane.speed), 
+										  jane.lArm.from.z + (jane.lArm.to1.z-jane.lArm.from.z) * sin(t*jane.speed) );
+						
+						jane.д_ръка.врът( jane.rArm.from.x + (jane.rArm.to1.x-jane.rArm.from.x) * sin(t*jane.speed), 
+										  jane.rArm.from.y + (jane.rArm.to1.y-jane.rArm.from.y) * sin(t*jane.speed), 
+										  jane.rArm.from.z + (jane.rArm.to1.z-jane.rArm.from.z) * sin(t*jane.speed) );
+						
+						jane.глава.врът( jane.head.from.x + (jane.head.to1.x-jane.head.from.x) * sin(t*jane.speed), 
+								         jane.head.from.y + (jane.head.to1.y-jane.head.from.y) * sin(t*jane.speed), 
+										 jane.head.from.z + (jane.head.to1.z-jane.head.from.z) * sin(t*jane.speed) );
+
+					} else {
+						jane.тяло.врът( jane.body.from.x + (jane.body.to2.x-jane.body.from.x) * (-sin(t*jane.speed)), 
+						  				jane.body.from.y + (jane.body.to2.y-jane.body.from.y) * (-sin(t*jane.speed)), 
+										jane.body.from.z + (jane.body.to2.z-jane.body.from.z) * (-sin(t*jane.speed)) );
+											
+						jane.л_ръка.врът( jane.lArm.from.x + (jane.lArm.to2.x-jane.lArm.from.x) * (-sin(t*jane.speed)), 
+						  				  jane.lArm.from.y + (jane.lArm.to2.y-jane.lArm.from.y) * (-sin(t*jane.speed)), 
+										  jane.lArm.from.z + (jane.lArm.to2.z-jane.lArm.from.z) * (-sin(t*jane.speed)) );
+						
+						jane.д_ръка.врът( jane.rArm.from.x + (jane.rArm.to2.x-jane.rArm.from.x) * (-sin(t*jane.speed)), 
+										  jane.rArm.from.y + (jane.rArm.to2.y-jane.rArm.from.y) * (-sin(t*jane.speed)), 
+										  jane.rArm.from.z + (jane.rArm.to2.z-jane.rArm.from.z) * (-sin(t*jane.speed)) );
+						
+						jane.глава.врът( jane.head.from.x + (jane.head.to2.x-jane.head.from.x) * (-sin(t*jane.speed)), 
+								         jane.head.from.y + (jane.head.to2.y-jane.head.from.y) * (-sin(t*jane.speed)), 
+										 jane.head.from.z + (jane.head.to2.z-jane.head.from.z) * (-sin(t*jane.speed)) );
+					}
+
 				}
 			}
 
