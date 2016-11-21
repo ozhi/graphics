@@ -68,12 +68,12 @@
 							  to1:  {x:  40, y: -20, z: -30},
 							  to2:  {x: -40, y:  20, z: -30} };
 
-				jane.lArm =  { from: {x:  0, y:  0, z:    0},
-							   to1:  {x:  0, y: 25, z: -110},
+				jane.lArm =  { from: {x:  0, y:   0, z:  -40},
+							   to1:  {x:  0, y:  25, z: -110},
 							   to2:  {x:  0, y: -10, z: -110} };
 
-				jane.rArm =  { from: {x:  0, y:  0, z:    0},
-					     	   to1:  {x:  0, y: 10, z: -110},
+				jane.rArm =  { from: {x:  0, y:   0, z:  -40},
+					     	   to1:  {x:  0, y:  10, z: -110},
 							   to2:  {x:  0, y: -25, z: -110} };
 				
 				jane.head =  { from: {x:  0, y:  0, z:  10},
@@ -87,8 +87,7 @@
 				// като променливата t е номер на кадър, като се
 				// очаква 1 секунда да е приблизително 60 кадъра
 				
-				{ // jumping Jack
-					
+				{ // jumping Jack		
 					jack.д_ръка.врът (              60*sin(t*jack.speed)-60             , 0, 0);
 					jack.д_лакът.врът( jack.elbowAngle*sin(t*jack.speed)-jack.elbowAngle, 0, 0);
 
@@ -102,7 +101,6 @@
 				}
 
 				{ // stretching Jane
-
 					if(sin(t*jane.speed) > 0) {
 						jane.тяло.врът( jane.body.from.x + (jane.body.to1.x-jane.body.from.x) * sin(t*jane.speed), 
 										jane.body.from.y + (jane.body.to1.y-jane.body.from.y) * sin(t*jane.speed), 
@@ -119,7 +117,6 @@
 						jane.глава.врът( jane.head.from.x + (jane.head.to1.x-jane.head.from.x) * sin(t*jane.speed), 
 								         jane.head.from.y + (jane.head.to1.y-jane.head.from.y) * sin(t*jane.speed), 
 										 jane.head.from.z + (jane.head.to1.z-jane.head.from.z) * sin(t*jane.speed) );
-
 					} else {
 						jane.тяло.врът( jane.body.from.x + (jane.body.to2.x-jane.body.from.x) * (-sin(t*jane.speed)), 
 						  				jane.body.from.y + (jane.body.to2.y-jane.body.from.y) * (-sin(t*jane.speed)), 
@@ -137,7 +134,6 @@
 								         jane.head.from.y + (jane.head.to2.y-jane.head.from.y) * (-sin(t*jane.speed)), 
 										 jane.head.from.z + (jane.head.to2.z-jane.head.from.z) * (-sin(t*jane.speed)) );
 					}
-
 				}
 			}
 
